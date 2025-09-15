@@ -1277,5 +1277,86 @@ public class Solutions extends Helpers {
         return ans;
     }
 
+    public static void gravity_falls() {
+        class helper {
+        private int[] lexi_sort(ArrayList<int[]> arrs) {
+            int[] curr_lowest = null;
+            boolean set = false;
+
+
+            for (int i = 0; i < arrs.size(); i++) {
+                if (curr_lowest == null) {
+                    curr_lowest = arrs.get(i);
+                    continue;
+                }
+                for (int j = 0; j < arrs.get(i).length; j++) {
+                    if (j == arrs.get(i).length - 1 && curr_lowest.length > j && curr_lowest[j] == arrs.get(i)[j]) {
+                        set = true;
+                        break;
+                    }
+                    if (curr_lowest.length > j && curr_lowest[j] < arrs.get(i)[j]) break;
+                    if (curr_lowest.length > j && curr_lowest[j] > arrs.get(i)[j]) {
+                        set = true;
+                        break;
+                    }
+
+                }
+
+                if (set) {
+                    curr_lowest = arrs.get(i);
+                    set = false;
+                }
+            }
+            return curr_lowest;
+        }
+
+        private ArrayList<int[]> getNext(int length, ArrayList<int[]> arrs) {
+            ArrayList<int[]> second = new ArrayList<>();
+
+            for (int j = 0; j < arrs.size(); j++) {
+                if (arrs.get(j).length <= length) continue;
+                second.add(Arrays.copyOfRange(arrs.get(j), length, arrs.get(j).length));
+
+            }
+            return second;
+        }
+
+        public ArrayList<int[]> sort_gravity(ArrayList<int[]> arrs, ArrayList<int[]> acc) {
+            if (arrs.isEmpty()) return acc;
+            int[] lowest = lexi_sort(arrs);
+            acc.add(lowest);
+            return sort_gravity(getNext(lowest.length, arrs), acc);
+            }
+        }
+        helper helper = new helper();
+        int t = in.nextInt();
+        //out of all arrays, there is one at ith index which as the lowest number
+        //at the bottom
+        for (int i = 0; i < t; i++) {
+            ArrayList<int[]> arrs = new ArrayList<>();
+            int n = in.nextInt();
+            for (int a = 0; a < n; a++) {
+                int l = in.nextInt();
+                int[] arr = new int[l];
+                for (int j = 0; j < l; j++) {
+                    int x = in.nextInt();
+                    arr[j] = x;
+                }
+                arrs.add(arr);
+
+            }
+            ArrayList<int[]> sorted = helper.sort_gravity(arrs, new ArrayList<>());
+            for (int j = 0; j < sorted.size(); j++) {
+                for (int k = 0; k < sorted.get(j).length; k++) {
+                    System.out.print(sorted.get(j)[k] + " ");
+                }
+            }
+            System.out.println();
+
+        }
+
+
+    }
+
 
 }
